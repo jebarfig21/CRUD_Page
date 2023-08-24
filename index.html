@@ -12,59 +12,32 @@
 	        }
 	    </style>
 		<title>CRUD Page - Proyecto 2</title>
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+		
 		   
 	</head>
 	<body>
-		<div class="container mt-5">
-		       <form class="form-inline" id="formulario">
-		           <div class="form-group">
-		               <input type="text" class="form-control" id="nombre" placeholder="Nombre">
-		           </div>
-		           <div class="form-group">
-		               <input type="text" class="form-control" id="apellido" placeholder="Apellido">
-		           </div>
-		           <div class="form-group">
-		               <input type="number" class="form-control" id="edad" placeholder="Edad">
-		           </div>
-		           <div class="form-group">
-		               <input type="number" class="form-control" id="calificacion" placeholder="Calificación">
-		           </div>
-		           <button type="submit" class="btn btn-primary">Guardar</button>
-		       </form>
-		   </div>
-	<script>
-        // Función para manejar el envío del formulario
-        document.getElementById("formulario").addEventListener("submit", function(event) {
-            event.preventDefault(); // Evita que se envíe el formulario de manera tradicional
+	<div class="container mt-5">
+       <form class="form-inline" id="formulario">
+           <div class="form-group">
+               <input type="text" class="form-control" id="nombre" placeholder="Nombre">
+           </div>
+           <div class="form-group">
+               <input type="text" class="form-control" id="apellido" placeholder="Apellido">
+           </div>
+           <div class="form-group">
+               <input type="number" class="form-control" id="edad" placeholder="Edad">
+           </div>
+           <div class="form-group">
+               <input type="number" class="form-control" id="calificacion" placeholder="Calificación">
+           </div>
+           <button type="submit" class="btn btn-primary" onclick="crearAlumno()">Guardar</button>
+       </form>
+   </div>
+	<br>
+   <div class="table" id="datosAlumnos"></div>
 
-            // Obtiene los valores de los campos
-            var nombre = document.getElementById("nombre").value;
-            var apellido = document.getElementById("apellido").value;
-            var edad = document.getElementById("edad").value;
-            var calificacion = document.getElementById("calificacion").value;
-
-            // Crea un objeto para almacenar los datos
-            var datos = {
-                nombre: nombre,
-                apellido: apellido,
-                edad: edad,
-                calificacion: calificacion
-            };
-
-            // Convierte el objeto a JSON y lo guarda en localStorage
-            localStorage.setItem("datosUsuario", JSON.stringify(datos));
-
-            // Limpia los campos del formulario
-            document.getElementById("nombre").value = "";
-            document.getElementById("apellido").value = "";
-            document.getElementById("edad").value = "";
-            document.getElementById("calificacion").value = "";
-
-            alert("Datos guardados en localStorage.");
-        });
-    </script>
-
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+	    <script src="script.js"></script>
 	</body>
 </html>
