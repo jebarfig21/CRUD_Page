@@ -4,6 +4,7 @@ function crearAlumno(){
     event.preventDefault(); // Evita que se envíe el formulario de manera tradicional
 
     // Obtiene los valores de los campos
+    var correo = document.getElementById("correo").value;
     var nombre = document.getElementById("nombre").value;
     var apellido = document.getElementById("apellido").value;
     var edad = document.getElementById("edad").value;
@@ -11,31 +12,19 @@ function crearAlumno(){
 
     // Crea un objeto para almacenar los datos
     var nuevoDato = {
+        correo: correo,
         nombre: nombre,
         apellido: apellido,
         edad: edad,
         calificacion: calificacion
     };
     //Obtener arreglo de  datos en local storage
-    var datosGuardados = localStorage.getItem("datosUsuario");
-    //console.log(typeof datosGuardados) //String
-
-    datosGuardados = datosGuardados ? JSON.parse(datosGuardados) : [];
     
-    //Pasar el nuevo object a json
-    nuevoDato = JSON.stringify(nuevoDato)
-
-    //Meter el string nuevo en el viejo
-    var datosActualizados = JSON.stringify(datosGuardados) 
-    console.log(typeof datosActualizados)
-    console.log(datosActualizados)
-    datosActualizados.push(nuevoDato)
-
-    console.log("Para guardar")
     // Convierte el objeto a JSON y lo guarda en localStorage
-    localStorage.setItem("datosUsuario", datosGuardados);
+    localStorage.setItem(correo, JSON.stringify(nuevoDato));
 
     // Limpia los campos del formulario
+    document.getElementById("correo").value = "";
     document.getElementById("nombre").value = "";
     document.getElementById("apellido").value = "";
     document.getElementById("edad").value = "";
@@ -46,44 +35,40 @@ function crearAlumno(){
 
 //Funcion para obtener todos los alumnos almacenados en localStorage
 function readAllAlumnos(){
-    var datosGuardados = localStorage.getItem("datosUsuario");
-
+    var alumnos=[]
+    for (var i = 0; i < localStorage.length; i++) {
+        var clave = localStorage.key(i);
+        var valor = localStorage.getItem(clave);
+        alumnos.push(valor)
+    }
+   
     // Verificar si ya hay datos en localStorage
-    var datos = datosGuardados ? JSON.parse(datosGuardados) : [];
-    return datos
+    
+    return alumnos
 }
 
 function showAlumnos() {
     // Obtener los datos del localStorage
-    var datosGuardados = localStorage.getItem("datosUsuario");
+    alumnos=readAllAlumnos()
+    tabla= document.getElementById('datosAlumnos')
     // Verificar si hay datos en localStorage
-    if (datosGuardados) {
-        // Convertir los datos a un arreglo
-        var datos = readAllAlumnos()
-
-        
-        // Obtener el elemento donde deseas mostrar los datos
-        var tabla = document.getElementById("datosAlumnos");
-
+    if (alumnos.length > 0) {
         // Crear una variable para almacenar la representación HTML de los datos
         var tabla_html = "";
-
         // Iterar a través de los datos y construir la representación HTML
-        /*for (var clave in datos) {
-                if (datos.hasOwnProperty(clave)) {
-                    console.log(clave + ": " + datos[clave]);
-                    console.log("hardcode")
-                }}
-            /*
-            tabla_html += "<p>Nombre: " + dato.nombre + "</p>";
-            tabla_html += "<p>Apellido: " + dato.apellido + "</p>";
-            tabla_html += "<p>Edad: " + dato.edad + "</p>";
-            tabla_html += "<p>Calificación: " + dato.calificacion + "</p>";
+        for (var i=0; i<alumnos.length;i++) {
+            alumno=JSON.parse(alumnos[i])
+            tabla_html += "<p>Correo: " + alumno.correo + "</p>";
+            tabla_html += "<p>Nombre: " + alumno.nombre + "</p>";
+            tabla_html += "<p>Apellido: " + alumno.apellido + "</p>";
+            tabla_html += "<p>Edad: " + alumno.edad + "</p>";
+            tabla_html += "<p>Calificación: " + alumno.calificacion + "</p>";
             tabla_html += "<hr>"; // Línea separadora entre los datos
-        }*/
+        }
         
         // Insertar la representación HTML en el contenedor
         tabla.innerHTML = tabla_html;
     }
 }
+
 window.onload = showAlumnos;
