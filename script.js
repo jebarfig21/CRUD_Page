@@ -1,4 +1,3 @@
-
 // Función para manejar el envío del formulario
 function crearAlumno(){
     event.preventDefault(); // Evita que se envíe el formulario de manera tradicional
@@ -41,34 +40,40 @@ function readAllAlumnos(){
         var valor = localStorage.getItem(clave);
         alumnos.push(valor)
     }
-   
-    // Verificar si ya hay datos en localStorage
-    
     return alumnos
 }
 
 function showAlumnos() {
     // Obtener los datos del localStorage
     alumnos=readAllAlumnos()
-    tabla= document.getElementById('datosAlumnos')
     // Verificar si hay datos en localStorage
     if (alumnos.length > 0) {
         // Crear una variable para almacenar la representación HTML de los datos
-        var tabla_html = "";
+        var tabla_html = "  <thead><tr><th scope='col'>Correo</th><th scope='col'>Nombre</th><th scope='col'>Apellido</th><th scope='col'>Edad</th><th scope='col'>Calificación</th><th scope='col'>Editar</th><th scope='col'>Eliminar</th></tr></thead>";
         // Iterar a través de los datos y construir la representación HTML
         for (var i=0; i<alumnos.length;i++) {
             alumno=JSON.parse(alumnos[i])
-            tabla_html += "<p>Correo: " + alumno.correo + "</p>";
-            tabla_html += "<p>Nombre: " + alumno.nombre + "</p>";
-            tabla_html += "<p>Apellido: " + alumno.apellido + "</p>";
-            tabla_html += "<p>Edad: " + alumno.edad + "</p>";
-            tabla_html += "<p>Calificación: " + alumno.calificacion + "</p>";
-            tabla_html += "<hr>"; // Línea separadora entre los datos
+            tabla_html +='<tr>';
+            tabla_html +='<th>'+alumno.correo+'</th>'
+            tabla_html +='<td>'+alumno.nombre+'</td>'
+            tabla_html +='<td>'+alumno.apellido+'</td>'
+            tabla_html +='<td>'+alumno.edad+'</td>'
+            tabla_html +='<td>'+alumno.calificacion+'</td>'
+            tabla_html +='<td> <button type="button" class="btn btn-info">Editar</button> </td>'
+            tabla_html +='<td> <button type="button" class="btn btn-danger" onclick=deleteAlumno(alumno.correo)>Eliminar</button> </td>'
+            tabla_html +='</tr><br>'
         }
-        
         // Insertar la representación HTML en el contenedor
-        tabla.innerHTML = tabla_html;
+        tabla= document.getElementById('datosAlumnos')
+        tabla.innerHTML = tabla_html;        
     }
 }
 
+function deleteAlumno(correo){
+    console.log(correo)
+    console.log("Intentando eliminar")
+    localStorage.removeItem(correo)
+}
+
 window.onload = showAlumnos;
+
