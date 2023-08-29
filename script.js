@@ -53,14 +53,16 @@ function showAlumnos() {
         // Iterar a través de los datos y construir la representación HTML
         for (var i=0; i<alumnos.length;i++) {
             alumno=JSON.parse(alumnos[i])
-            tabla_html +='<tr>';
+            tabla_html +='<tr id='+alumno.correo+'>';
             tabla_html +='<th>'+alumno.correo+'</th>'
-            tabla_html +='<td>'+alumno.nombre+'</td>'
-            tabla_html +='<td>'+alumno.apellido+'</td>'
-            tabla_html +='<td>'+alumno.edad+'</td>'
-            tabla_html +='<td>'+alumno.calificacion+'</td>'
-            tabla_html +='<td> <button type="button" class="btn btn-info">Editar</button> </td>'
-            tabla_html +='<td> <button type="button" class="btn btn-danger" onclick=deleteAlumno(alumno.correo)>Eliminar</button> </td>'
+            tabla_html +='<td  contenteditable="false">'+alumno.nombre+'</td>'
+            tabla_html +='<td contenteditable="false">'+alumno.apellido+'</td>'
+            tabla_html +='<td contenteditable="false">'+alumno.edad+'</td>'
+            tabla_html +='<td contenteditable="false">'+alumno.calificacion+'</td>'
+            tabla_html +='<td> <button type="button" class="btn btn-info" onclick=editarAlumno("'+alumno.correo+'") >Editar</button> </td>'
+            tabla_html +='<td> <button type="button" class="btn btn-danger" onclick=deleteAlumno("'+alumno.correo+'")>Eliminar</button> </td>'
+            tabla_html +='<td> <button class="guardar" style="display: none;">Guardar</button> </td>'
+            
             tabla_html +='</tr><br>'
         }
         // Insertar la representación HTML en el contenedor
@@ -75,5 +77,47 @@ function deleteAlumno(correo){
     localStorage.removeItem(correo)
 }
 
+function editarAlumno(correo){
+    var fila = document.getElementById(correo);
+    console.log(correo)
+    console.log("Editando")
+    alumno = localStorage.getItem(correo)
+    console.log(alumno)
+    //var correo = elementos[0];
+    alumno = JSON.parse(alumno)
+    var correo = alumno.correo;
+    var apellido = alumno.apellido;
+    var edad = alumno.edad;
+    var calificacion = alumno.calificacion;
+   
+    document.getElementById("correo").value = alumno.correo;
+    document.getElementById("nombre").value = alumno.nombre;
+    document.getElementById("apellido").value = alumno.apellido;
+    document.getElementById("edad").value = alumno.edad;
+    document.getElementById("calificacion").value = alumno.calificacion;
+
+    var formulario = document.getElementById("formulario");
+    var formularioTop = formulario.getBoundingClientRect().top;
+
+    // Desplaza la página hacia arriba para mostrar el formulario
+    window.scrollTo({
+        top: formularioTop - 20, // Puedes ajustar el valor para controlar la posición exacta
+        behavior: "smooth" // Para hacer el desplazamiento suave
+    });
+    
+    // Crea un objeto para almacenar los datos
+    var nuevoDato = {
+        correo: alumno.correo,
+        nombre: alumno.nombre,
+        apellido: alumno.apellido,
+        edad: alumno.edad,
+        calificacion: alumno.calificacion
+    };
+    //Obtener arreglo de  datos en local storage
+    
+    // Convierte el objeto a JSON y lo guarda en localStorage
+    localStorage.setItem(correo, JSON.stringify(nuevoDato));
+
+}
 window.onload = showAlumnos;
 
