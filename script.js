@@ -6,6 +6,8 @@ function crearAlumno(){
     // Obtiene los valores de los campos
     var alumno = getElemsForm()
     alumno.uuid = uuidv4();
+    console.log(alumno.uuid)
+    console.log(alumno)
     localStorage.setItem(alumno.uuid, JSON.stringify(alumno));
     cleanElemsForm();
 
@@ -33,7 +35,7 @@ function showAlumnos() {
     // Verificar si hay datos en localStorage
     if (alumnos.length > 0) {
         // Crear una variable para almacenar la representación HTML de los datos
-        var tabla_html = "  <thead><tr><th scope='col'>Correo</th><th scope='col'>Nombre</th><th scope='col'>Apellido</th><th scope='col'>Edad</th><th scope='col'>Calificación</th><th scope='col'>Editar</th><th scope='col'>Eliminar</th></tr></thead>";
+        var tabla_html = "  <thead style='thead-dark'><tr><th scope='col'>Correo</th><th scope='col'>Nombre</th><th scope='col'>Apellido</th><th scope='col'>Edad</th><th scope='col'>Calificación</th><th scope='col'>Editar</th><th scope='col'>Eliminar</th></tr></thead>";
         // Iterar a través de los datos y construir la representación HTML
         for (var i=0; i<alumnos.length;i++) {
             alumno=JSON.parse(alumnos[i])
@@ -43,7 +45,7 @@ function showAlumnos() {
             tabla_html +='<td contenteditable="false">'+alumno.apellido+'</td>'
             tabla_html +='<td contenteditable="false">'+alumno.edad+'</td>'
             tabla_html +='<td contenteditable="false">'+alumno.calificacion+'</td>'
-            tabla_html +='<td> <button type="button" class="btn btn-info" onclick=editarAlumno("'+alumno.uuid+'") >Editar</button> </td>'
+            tabla_html +='<td> <button type="button" class="btn btn-warning" onclick=editarAlumno("'+alumno.uuid+'") >Editar</button> </td>'
             tabla_html +='<td> <button type="button" class="btn btn-danger" onclick=deleteAlumno("'+alumno.uuid+'")>Eliminar</button> </td>'
             tabla_html +='</tr><br>'
         }
@@ -60,12 +62,14 @@ function deleteAlumno(uuid){
 }
 
 function editarAlumno(uuid){
-     console.log("editarAlunmo")
+     console.log("editarAlumno")
    
     var fila = document.getElementById(uuid);
     alumno = localStorage.getItem(uuid)
     alumno = JSON.parse(alumno)
+    document.getElementById("actualizar").className = document.getElementById("guardar").className.replaceAll(" d-none", "")
     document.getElementById("guardar").className = document.getElementById("guardar").className.concat(" d-none")
+    console.log(alumno)
     //Llenar el formulario con valores actuales
     document.getElementById("correo").value = alumno.correo;
     document.getElementById("nombre").value = alumno.nombre;
@@ -98,7 +102,8 @@ function editarAlumno(uuid){
          var alumno = getElemsForm()
          localStorage.setItem(uuid, JSON.stringify(alumno));
          cleanElemsForm();
-         document.getElementById("guardar").className = document.getElementById("guardar").className.replace(" d-none", "")
+         document.getElementById("guardar").className = document.getElementById("guardar").className.replaceAll(" d-none", "")
+         document.getElementById("actualizar").className = document.getElementById("guardar").className.concat(" d-none")
          alert("Datos Actualizados");
          location.reload()//Actualiza la página para ver el cambio
 

@@ -1,0 +1,6 @@
+.formulario-estrecho .form-control {
+     margin-bottom: 1%;
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+}
