@@ -99,6 +99,7 @@ function editarAlumno(uuid){
     
     esperarHastaClic().then(function() {
          var alumno = getElemsForm()
+         alumno.uuid = uuid
          localStorage.setItem(uuid, JSON.stringify(alumno));
          cleanElemsForm();
          document.getElementById("guardar").className = document.getElementById("guardar").className.replaceAll(" d-none", "")
