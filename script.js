@@ -1,25 +1,21 @@
-// Función para manejar el envío del formulario
+/*
+* Agrega el registro de un alumno, 
+* el key del local storage es un uuid aleatorio, el mismo se va a usar para manipualr al usuario 
+*/
 function crearAlumno(){
-    console.log("crearAlumno")
-   
     event.preventDefault(); // Evita que se envíe el formulario de manera tradicional
-    // Obtiene los valores de los campos
     var alumno = getElemsForm()
     alumno.uuid = uuidv4();
-    console.log(alumno.uuid)
-    console.log(alumno)
     localStorage.setItem(alumno.uuid, JSON.stringify(alumno));
     cleanElemsForm();
-
     alert("Datos guardados en localStorage.");
     location.reload()//Actualiza la página para ver el cambio
-    
 }
 
-//Funcion para obtener todos los alumnos almacenados en localStorage
+/*
+*Funcion para obtener todos los alumnos almacenados en localStorage
+*/
 function readAllAlumnos(){
-    console.log("readAllAlumnoa")
-
     var alumnos=[]
     for (var i = 0; i < localStorage.length; i++) {
         var clave = localStorage.key(i);
@@ -29,12 +25,15 @@ function readAllAlumnos(){
     return alumnos
 }
 
+/*
+* Funcion que muestra en el index.html una tabla con los alumnos regsitrados en el local storage
+*/
 function showAlumnos() {
     // Obtener los datos del localStorage
     alumnos=readAllAlumnos()
     // Verificar si hay datos en localStorage
     if (alumnos.length > 0) {
-        // Crear una variable para almacenar la representación HTML de los datos
+        // Header de la tabla
         var tabla_html = "  <thead style='thead-dark'><tr><th scope='col'>Correo</th><th scope='col'>Nombre</th><th scope='col'>Apellido</th><th scope='col'>Edad</th><th scope='col'>Calificación</th><th scope='col'>Editar</th><th scope='col'>Eliminar</th></tr></thead>";
         // Iterar a través de los datos y construir la representación HTML
         for (var i=0; i<alumnos.length;i++) {
@@ -55,6 +54,9 @@ function showAlumnos() {
     }
 }
 
+/*
+* Funcion para eliminar un alumno con base en el parametro de su uuid, el cual es el key en local storage
+*/
 function deleteAlumno(uuid){   
     localStorage.removeItem(uuid)
     location.reload()
@@ -62,14 +64,13 @@ function deleteAlumno(uuid){
 }
 
 function editarAlumno(uuid){
-     console.log("editarAlumno")
-   
+    
     var fila = document.getElementById(uuid);
     alumno = localStorage.getItem(uuid)
     alumno = JSON.parse(alumno)
     document.getElementById("actualizar").className = document.getElementById("guardar").className.replaceAll(" d-none", "")
     document.getElementById("guardar").className = document.getElementById("guardar").className.concat(" d-none")
-    console.log(alumno)
+    
     //Llenar el formulario con valores actuales
     document.getElementById("correo").value = alumno.correo;
     document.getElementById("nombre").value = alumno.nombre;
@@ -95,10 +96,8 @@ function editarAlumno(uuid){
          });
        });
      }
-     console.log('Esperando a que se haga clic en el botón "Actualizar" para editar al alumno...');
-
+    
     esperarHastaClic().then(function() {
-         console.log('El botón "Actualizar" ha sido oprimido. Realizar la edición del alumno aquí.');
          var alumno = getElemsForm()
          localStorage.setItem(uuid, JSON.stringify(alumno));
          cleanElemsForm();
@@ -106,33 +105,17 @@ function editarAlumno(uuid){
          document.getElementById("actualizar").className = document.getElementById("guardar").className.concat(" d-none")
          alert("Datos Actualizados");
          location.reload()//Actualiza la página para ver el cambio
-
-    
     });
 }
 
-function actualizarAlumno(){
-    localStorage.setItem(alumno.uuid, JSON.stringify(alumno));
-    alumno = getElemsForm()    
-
-
-}
-
+//Cargar la vist de la tabla de alumnos que de vez que se recarga la pagina
 window.onload = showAlumnos;
+
+
 /** 
  * FUNCIONES AUXILIARES
- * 
+ * Sección donde se declaran funciona auxiliares apra el CRUD
  * */
-function alumnoExist(correo){
-    console.log("alumnoExist")
-    
-    console.log(correo)
-    console.log(localStorage.getItem(correo))
-    if (localStorage.getItem(correo) == null){
-        return false
-    }
-    return true
-}
 
 // Función para generar un UUID v4
 // Funcion obtenida de internet como apoyo
@@ -144,6 +127,9 @@ function uuidv4() {
   });
 }
 
+/*
+*Regresa un objeto de javascript alumno con base en los datos que se encuentran escritos en el formulario
+*/
 function getElemsForm(){
     var correo = document.getElementById("correo").value;
     var nombre = document.getElementById("nombre").value;
@@ -161,6 +147,9 @@ function getElemsForm(){
     return alumno ;
 }
 
+/*
+* Regresa el fomrulario a un status por default 
+*/
 function cleanElemsForm(){
     document.getElementById("correo").value = "";
     document.getElementById("nombre").value = "";
